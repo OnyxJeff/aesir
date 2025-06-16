@@ -1,9 +1,9 @@
-# Aesir-1
+# Aesir
 
 ![Build](https://github.com/OnyxJeff/ha-aesir-1/actions/workflows/build.yml/badge.svg)
 ![Maintained](https://img.shields.io/badge/maintained-yes-blue)
 
-**Aesir-1** is my homelab's command center—an Intel NUC running **Proxmox**, managing my container infrastructure via **Portainer**. It powers essential services like:
+**Aesir** is my homelab's command center—an Intel NUC running **Proxmox**, managing my container infrastructure via **Portainer**. It powers essential services like:
 
 - `*-darr stack` (Sonarr, Radarr, etc.)
 - `netboot.xyz` for PXE booting
@@ -16,7 +16,7 @@
 ```text
 aesir-1/
 ├── .github/workflows/    # CI for YAML validation
-├── docker/               # YAML-based -darr stack applications
+├── docker/               # YAML-based -darr stack and other applications
 ├── scripts/              # Shared/reusable automation logic
 └── README.md             # You're reading it!
 ```

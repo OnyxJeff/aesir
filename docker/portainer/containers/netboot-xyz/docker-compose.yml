@@ -1,16 +1,18 @@
+---
 version: '3.8'
-
 services:
   netbootxyz:
-    image: netbootxyz/netboot.xyz:latest
+    image: ghcr.io/netbootxyz/netbootxyz
     container_name: netbootxyz
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
+    environment:
+      - MENU_VERSION=2.0.47 # optional
+      - NGINX_PORT=80 # optional
+      - WEB_APP_PORT=3000 # optional
     volumes:
-      - netbootxyz-data:/data
-    env_file:
-      - ../../env/netbootxyz.env
-
-volumes:
-  netbootxyz-data:
+      - ${USERDIR}/docker/netboot/config:/config # optional
+      - ${USERDIR}/docker/netboot/assets:/assets # optional
+    ports:
+      - 3000:3000  # optional, destination should match ${WEB_APP_PORT} variable above.
+      - 69:69/udp
+      - 8080:80  # optional, destination should match ${NGINX_PORT} variable above.
+    restart: unless-stopped

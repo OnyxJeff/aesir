@@ -3,7 +3,7 @@
 # === Aesir-1 Backup Script ===
 # Back up critical container volumes
 
-BACKUP_DIR="/mnt/backup/aesir-1"
+BACKUP_DIR="/mnt/backup/aesir"
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 mkdir -p "$BACKUP_DIR"

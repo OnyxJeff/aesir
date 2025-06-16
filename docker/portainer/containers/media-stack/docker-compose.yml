@@ -1,4 +1,6 @@
-version: "3.8"
+---
+# docker-compose -f ~/docker/docker-compose.yml up -d
+version: '3.8'
 networks:
   internal:
     driver: bridge
@@ -19,6 +21,20 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
 
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - TZ=${TZ}
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INCLUDE_STOPPED=true
+      - WATCHTOWER_POLL_INTERVAL=1800
+      - WATCHTOWER_DEBUG=true
+    command: --schedule "0 0 4 * * *" --cleanup
+  
   lidarr:
     image: linuxserver/lidarr:latest
     container_name: lidarr
@@ -141,7 +157,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - SECRET_ENCRYPTION_KEY=${SECRET_ENCRYPTION_KEY}
+      - SECRET_ENCRYPTION_KEY=4301553cfb01a920b287cc1c055bb3c48c9c59a5fb7c182629b51891b88fec09
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock # Optional, only if you want docker integration
       - ./homarr/appdata:/appdata

@@ -1,20 +1,13 @@
 version: '3.8'
-
 services:
   app:
     image: 'jc21/nginx-proxy-manager:latest'
-    container_name: nginxproxymanager
     restart: unless-stopped
     ports:
-      - '80:80'
-      - '81:81'   # Web UI
-      - '443:443'
+      # These ports are in format <host-port>:<container-port>
+      - '80:80' # Public HTTP Port
+      - '443:443' # Public HTTPS Port
+      - '81:81' # Admin Web Port
     volumes:
-      - data:/data
-      - letsencrypt:/etc/letsencrypt
-    env_file:
-      - ../../env/nginxproxymanager.env
-
-volumes:
-  data:
-  letsencrypt:
+      - ./npm/data:/data
+      - ./npm/letsencrypt:/etc/letsencrypt
