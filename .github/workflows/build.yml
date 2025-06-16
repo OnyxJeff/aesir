@@ -14,20 +14,25 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Set Up Docker CLI
+      - name: Install Docker Compose CLI plugin
         run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose-plugin
+          mkdir -p ~/.docker/cli-plugins/
+          curl -SL https://github.com/docker/compose/releases/download/v2.24.6/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+          chmod +x ~/.docker/cli-plugins/docker-compose
+          docker compose version
 
       - name: List Compose Files
         run: |
-          echo "Finding docker-compose.yml files..."
+          echo "🔍 Searching for docker-compose.yml files..."
           find ./docker -name "docker-compose.yml"
 
       - name: Validate Compose Files
         run: |
-          echo "Validating docker-compose.yml files..."
+          echo "🔧 Validating each docker-compose.yml..."
           find ./docker -name "docker-compose.yml" | while read file; do
-            echo "▶️ Validating $file"
-            docker compose -f "$file" config > /dev/null
+            echo "▶️ Validating: $file"
+            docker compose -f "$file" config > /dev/null || {
+              echo "❌ Validation failed for $file"
+              exit 1
+            }
           done
