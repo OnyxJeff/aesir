@@ -1,7 +1,10 @@
 # Aesir
 
-![Build](https://github.com/OnyxJeff/aesir/actions/workflows/build.yml/badge.svg)
-![Maintained](https://img.shields.io/badge/maintained-yes-blue)
+![Build Status](https://github.com/OnyxJeff/aesir/actions/workflows/build.yml/badge.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2025.svg)
+![License](https://img.shields.io/badge/license-MIT-green.svg)
+![GitHub release](https://img.shields.io/github/v/release/OnyxJeff/aesir)
+![Issues](https://img.shields.io/github/issues/OnyxJeff/aesir)
 
 **Aesir** is my homelab's command center—an Intel NUC running **Proxmox**, managing my container infrastructure via **Portainer**. It powers essential services like:
 
