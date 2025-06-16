@@ -14,7 +14,7 @@
 ## 📁 Repo Structure
 
 ```text
-aesir-1/
+aesir/
 ├── .github/workflows/    # CI for YAML validation
 ├── docker/               # YAML-based -darr stack and other applications
 ├── scripts/              # Shared/reusable automation logic

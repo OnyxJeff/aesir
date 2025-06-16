@@ -8,10 +8,26 @@ on:
 
 jobs:
   validate:
+    name: Validate Docker Compose Files
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: List Docker Compose Files
-        run: find ./docker -name "docker-compose.yml"
+      - name: Set Up Docker CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose-plugin
+
+      - name: List Compose Files
+        run: |
+          echo "Finding docker-compose.yml files..."
+          find ./docker -name "docker-compose.yml"
+
+      - name: Validate Compose Files
+        run: |
+          echo "Validating docker-compose.yml files..."
+          find ./docker -name "docker-compose.yml" | while read file; do
+            echo "▶️ Validating $file"
+            docker compose -f "$file" config > /dev/null
+          done
