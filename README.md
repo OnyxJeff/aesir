@@ -18,10 +18,17 @@
 
 ```text
 aesir/
-├── .github/workflows/    # CI for YAML validation
-├── docker/               # YAML-based -darr stack and other applications
-├── scripts/              # Shared/reusable automation logic
-└── README.md             # You're reading it!
+├── .github/workflows/ # CI for Compose/YAML validation
+├── docker/ # All Docker Compose stacks
+│ ├── portainer/
+│ │ ├── containers/
+│ │ │ ├── gitea/
+│ │ │ ├── media-stack/
+│ │ │ ├── netboot-xyz/
+│ │ └─└── nginxrp/
+│ └── dockprom/
+├── scripts/ # Utility scripts and backups
+└── README.md # System overview and service notes
 ```
 
 ---
@@ -33,7 +40,7 @@ After installing Proxmox on this node this should be installed into a Linux VM o
 To deploy a stack:
 
 ```bash
-cd docker/"stack-name"
+cd aesir/docker/portainer/containers/"stack-name"
 docker-compose up -d
 ```
 
