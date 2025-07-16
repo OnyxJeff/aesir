@@ -22,9 +22,7 @@ aesir/
 ├── docker/ # All Docker Compose stacks
 │ ├── portainer/
 │ │ ├── containers/
-│ │ │ ├── gitea/
 │ │ │ ├── media-stack/
-│ │ │ ├── netboot-xyz/
 │ │ └─└── nginxrp/
 │ └── dockprom/
 ├── scripts/ # Utility scripts and backups
@@ -52,7 +50,6 @@ docker-compose up -d
 | :---                | :---:                                      |
 | darr-stack          | Media automation with Sonarr, Radarr, etc. |
 | nginx-proxy-manager |	Reverse proxy with SSL & GUI               |
-| netbootxyz          | PXE boot server                            |
 
 ---
 
