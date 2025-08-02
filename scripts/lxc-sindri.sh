@@ -17,6 +17,14 @@ variables
 color
 catch_errors
 start
+
+# Validate storage supports rootdir
+if ! pvesm status --verbose | grep -A3 "$var_storage" | grep -q rootdir; then
+  msg_error "Storage '$var_storage' does not support LXC containers (missing 'rootdir')"
+  echo -e "${INFO} Tip: Use 'local' or a ZFS/dir storage that supports containers."
+  exit 1
+fi
+
 build_container
 description
 
