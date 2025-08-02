@@ -44,7 +44,17 @@ function update_script() {
     chmod +x "$COMPOSE_BIN"
     msg_ok "Docker Compose updated"
   fi
+
+    msg_info "Cleaning up"
+  $STD apt-get -y autoremove
+  $STD apt-get -y autoclean
+  msg_ok "Cleanup complete"
+  exit
 }
+
+start
+build_container
+description
 
 # Prompt for Gitea URL
 read -p "Enter the URL of your Gitea instance (default: http://gitea.local): " GITEA_URL
@@ -84,10 +94,6 @@ pct exec "$CTID" -- docker run -d \
   --env-file /etc/woodpecker.env \
   woodpeckerci/woodpecker-server:latest
 msg_ok "Woodpecker server is running"
-
-start
-build_container
-description
 
 # Done
 msg_ok "Completed Successfully!\n"
