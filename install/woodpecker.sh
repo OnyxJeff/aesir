@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP="Woodpecker"
+APP="woodpecker"
 REPO="woodpecker-ci/woodpecker"
 INSTALL_DIR="/opt/woodpecker"
 
