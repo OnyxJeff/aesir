@@ -49,8 +49,8 @@ Scripts to quickly provision the Sindri and Brokkr CI/CD containers on Proxmox.
 Run them directly from the repo or via raw GitHub URL:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/lxc-scripts/lxc-sindri.sh)
-bash <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/lxc-scripts/lxc-brokkr.sh)
+bash <(curl -fsSL https://github.com/OnyxJeff/aesir/blob/0a5fb8916cff49b27ede3894ee8df2adeddfef6c/scripts/lxc-sindri.sh)
+bash <(curl -fsSL https://github.com/OnyxJeff/aesir/blob/0a5fb8916cff49b27ede3894ee8df2adeddfef6c/scripts/lxc-brokkr.sh)
 ```
 
 ---
