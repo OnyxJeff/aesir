@@ -3,6 +3,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/misc/b
 
 # App Metadata
 APP="Sindri"
+var_install="${var_install:-woodpecker}"
 var_tags="${var_tags:-ci;woodpecker;pipeline}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-2048}"
@@ -12,6 +13,7 @@ var_version="${var_version:-12}"
 var_unprivileged="${var_unprivileged:-1}"
 
 # Header and Setup
+echo "📦 Installing using script: ${var_install}.sh"
 header_info "$APP"
 variables
 color
