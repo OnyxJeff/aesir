@@ -42,6 +42,17 @@ cd aesir/docker/portainer/containers/"stack-name"
 docker-compose up -d
 ```
 
+## LXC Setup Scripts
+
+Scripts to quickly provision the Sindri and Brokkr CI/CD containers on Proxmox.
+
+Run them directly from the repo or via raw GitHub URL:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/lxc-scripts/lxc-sindri.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/lxc-scripts/lxc-brokkr.sh)
+```
+
 ---
 
 ## 🧰 Services
