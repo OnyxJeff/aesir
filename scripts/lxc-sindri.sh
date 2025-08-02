@@ -3,6 +3,9 @@ source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxV
 
 # App Metadata
 APP="Sindri (Woodpecker CI)"
+
+# Defaults
+var_storage="${var_storage:-local}"
 var_tags="${var_tags:-ci;woodpecker;pipeline}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-2048}"
@@ -17,6 +20,13 @@ variables
 color
 catch_errors
 start
+
+# Validate storage supports rootdir
+if ! pvesm list $var_storage | grep -q rootfs; then
+  msg_error "Storage '$var_storage' does not support LXC containers (missing 'rootdir')"
+  exit 1
+fi
+
 build_container
 description
 
