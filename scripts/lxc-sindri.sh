@@ -3,7 +3,6 @@ source <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/misc/b
 
 # App Metadata
 APP="Sindri"
-var_install="${var_install:-woodpecker}"
 var_tags="${var_tags:-ci;woodpecker;pipeline}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-2048}"
