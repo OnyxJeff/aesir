@@ -2,10 +2,7 @@
 source <(curl -fsSL https://raw.githubusercontent.com/community-scripts/ProxmoxVE/main/misc/build.func)
 
 # App Metadata
-APP="Sindri (Woodpecker CI)"
-
-# Defaults
-var_storage="${var_storage:-local}"
+APP="Sindri"
 var_tags="${var_tags:-ci;woodpecker;pipeline}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-2048}"
@@ -19,23 +16,35 @@ header_info "$APP"
 variables
 color
 catch_errors
-start
 
-# Validate storage supports LXC (rootdir)
-if ! pvesm status | awk -v store="$var_storage" '$1 == store && $0 ~ /rootdir/ { found=1 } END { exit !found }'; then
-  msg_error "Storage '$var_storage' does not support LXC containers (missing 'rootdir')"
-  echo -e "${INFO} Available storages with rootdir:"
-  pvesm status | grep rootdir | awk '{print $1}'
-  exit 1
-fi
+function update_script() {
+  header_info
+  check_container_storage
+  check_container_resources
 
-build_container
-description
+  get_latest_release() {
+    curl -fsSL https://api.github.com/repos/"$1"/releases/latest | grep '"tag_name":' | cut -d'"' -f4
+  }
 
-# Optional: Docker and Tools
-msg_info "Installing Docker and dependencies"
-pct exec "$CTID" -- bash -c "apt-get update && apt-get install -y docker.io curl git"
-msg_ok "Installed Docker"
+  msg_info "Updating base system"
+  $STD apt-get update
+  $STD apt-get -y upgrade
+  msg_ok "Base system updated"
+
+  msg_info "Updating Docker Engine"
+  $STD apt-get install --only-upgrade -y docker-ce docker-ce-cli containerd.io
+  msg_ok "Docker Engine updated"
+
+  if [[ -f /usr/local/lib/docker/cli-plugins/docker-compose ]]; then
+    COMPOSE_BIN="/usr/local/lib/docker/cli-plugins/docker-compose"
+    COMPOSE_NEW_VERSION=$(get_latest_release "docker/compose")
+    msg_info "Updating Docker Compose to $COMPOSE_NEW_VERSION"
+    curl -fsSL "https://github.com/docker/compose/releases/download/${COMPOSE_NEW_VERSION}/docker-compose-$(uname -s)-$(uname -m)" \
+      -o "$COMPOSE_BIN"
+    chmod +x "$COMPOSE_BIN"
+    msg_ok "Docker Compose updated"
+  fi
+}
 
 # Prompt for Gitea URL
 read -p "Enter the URL of your Gitea instance (default: http://gitea.local): " GITEA_URL
@@ -75,6 +84,10 @@ pct exec "$CTID" -- docker run -d \
   --env-file /etc/woodpecker.env \
   woodpeckerci/woodpecker-server:latest
 msg_ok "Woodpecker server is running"
+
+start
+build_container
+description
 
 # Done
 msg_ok "Completed Successfully!\n"
