@@ -21,9 +21,11 @@ color
 catch_errors
 start
 
-# Validate storage supports rootdir
-if ! pvesm list $var_storage | grep -q rootfs; then
+# Validate storage supports LXC (rootdir)
+if ! pvesm status | awk -v store="$var_storage" '$1 == store && $0 ~ /rootdir/ { found=1 } END { exit !found }'; then
   msg_error "Storage '$var_storage' does not support LXC containers (missing 'rootdir')"
+  echo -e "${INFO} Available storages with rootdir:"
+  pvesm status | grep rootdir | awk '{print $1}'
   exit 1
 fi
 
