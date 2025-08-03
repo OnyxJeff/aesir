@@ -1,65 +1,80 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP="woodpecker"
-REPO="woodpecker-ci/woodpecker"
+APP="Woodpecker CI"
 INSTALL_DIR="/opt/woodpecker"
+REPO="woodpeckerci/woodpecker-server"
+DEFAULT_GITEA_URL="http://gitea.local"
+ENV_FILE="$INSTALL_DIR/.env"
 
 msg() { echo -e "\033[1;32m[INFO]\033[0m $*"; }
 err() { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; }
 
-msg "Updating system and installing dependencies..."
-apt-get update -y
-apt-get install -y curl unzip ca-certificates jq
+# Ask for Gitea URL or use default
+read -rp "Enter your Gitea URL [default: $DEFAULT_GITEA_URL]: " GITEA_URL
+GITEA_URL="${GITEA_URL:-$DEFAULT_GITEA_URL}"
 
-msg "Creating woodpecker user and directories..."
-useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin woodpecker || true
-mkdir -p "$INSTALL_DIR"
-chown woodpecker:woodpecker "$INSTALL_DIR"
+msg "Installing Docker & Docker Compose..."
+apt-get update
+apt-get install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release \
+    unzip \
+    jq
 
-read -rp "Enter Woodpecker version to install (e.g. v2, v2.3.1, next): " WOODPECKER_VERSION
+# Add Docker's official GPG key and repo
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor \
+    -o /etc/apt/keyrings/docker.gpg
+chmod a+r /etc/apt/keyrings/docker.gpg
 
-msg "Downloading latest Woodpecker binary..."
-WOODPECKER_VERSION="v2"
-ARCH=$(dpkg --print-architecture)
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/debian $(lsb_release -cs) stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-if [[ "$ARCH" != "amd64" ]]; then
-  err "Unsupported architecture: $ARCH. Only amd64 is supported."
-  exit 1
-fi
+apt-get update
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${WOODPECKER_VERSION}/woodpecker_${WOODPECKER_VERSION}_linux_amd64.tar.gz"
+msg "Docker installed successfully"
 
-curl --head --fail --silent "$DOWNLOAD_URL" >/dev/null || {
-  err "Woodpecker version not found at $DOWNLOAD_URL"
-  exit 1
-}
+# Set up Woodpecker directories
+msg "Creating Woodpecker directories..."
+mkdir -p "$INSTALL_DIR"/{data,logs}
+chown -R root:root "$INSTALL_DIR"
 
-curl -L "$DOWNLOAD_URL" -o /tmp/woodpecker.tar.gz
-tar -xzvf /tmp/woodpecker.tar.gz -C /tmp
-install -m 755 /tmp/woodpecker "$INSTALL_DIR/woodpecker"
+# Generate Woodpecker agent secret
+WOODPECKER_AGENT_SECRET=$(openssl rand -hex 16)
+msg "Generated Woodpecker Agent Secret: $WOODPECKER_AGENT_SECRET"
 
-msg "Creating systemd service..."
-cat >/etc/systemd/system/woodpecker.service <<EOF
-[Unit]
-Description=Woodpecker CI Server
-After=network.target
-
-[Service]
-User=woodpecker
-Group=woodpecker
-ExecStart=${INSTALL_DIR}/woodpecker server
-Restart=always
-RestartSec=5s
-
-[Install]
-WantedBy=multi-user.target
+# Create environment file
+cat > "$ENV_FILE" <<EOF
+WOODPECKER_OPEN=true
+WOODPECKER_HOST=http://localhost:8000
+WOODPECKER_GITEA=true
+WOODPECKER_GITEA_URL=${GITEA_URL}
+WOODPECKER_GITEA_CLIENT=replace-me
+WOODPECKER_GITEA_SECRET=replace-me
+WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
 EOF
 
-msg "Enabling and starting woodpecker.service..."
-systemctl daemon-reload
-systemctl enable woodpecker.service
-systemctl start woodpecker.service
+msg "Woodpecker environment file created at $ENV_FILE"
 
-msg "Woodpecker CI installation completed successfully!"
-msg "You can check status with: systemctl status woodpecker"
+# Deploy container
+msg "Launching Woodpecker CI server container..."
+docker run -d \
+  --name woodpecker-server \
+  --restart unless-stopped \
+  -v "$INSTALL_DIR/data:/var/lib/woodpecker" \
+  -v "$ENV_FILE:/etc/woodpecker.env" \
+  -p 8000:8000 \
+  -p 9000:9000 \
+  --env-file /etc/woodpecker.env \
+  "$REPO:latest"
+
+msg "Woodpecker CI server is up and running!"
+echo ""
+echo -e "➡️  Access Woodpecker UI at: \033[1;34mhttp://<your-container-ip>:8000\033[0m"
+echo -e "🔑 Use the following Agent Secret for Brokkr: \033[1;33m${WOODPECKER_AGENT_SECRET}\033[0m"
