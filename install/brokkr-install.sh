@@ -29,7 +29,7 @@ read -p "Enter Woodpecker Agent Secret: " WOODPECKER_AGENT_SECRET
 
 echo ""
 msg "Prompting for agent labels..."
-read -p "Please list the platforms that this agent will serve (e.g. linux,arm64,etc.)..." AGENT_LABELS
+read -p "Please list the platforms that this agent will serve (e.g. linux,amd64,arm64)..." AGENT_LABELS
 
 echo ""
 msg "Writing .env file..."
@@ -46,10 +46,13 @@ cat > "$COMPOSE_FILE" <<EOF
 services:
   brokkr:
     image: woodpeckerci/woodpecker-agent:v3
+    restart: unless-stopped
+    env_file: .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    env_file: .env
-    restart: unless-stopped
+    labels:
+      - "woodpecker.platform=linux/amd64"
+      - "woodpecker.platform=linux/arm64"
 EOF
 
 cd "$INSTALL_DIR"
