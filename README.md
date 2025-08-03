@@ -51,6 +51,7 @@ Run them directly from the repo or via raw GitHub URL:
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/scripts/lxc-sindri.sh)"
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/scripts/lxc-brokkr.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/scripts/lxc-eitri.sh)"
 ```
 
 ---
