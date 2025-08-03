@@ -69,9 +69,7 @@ services:
     env_file: .env
     volumes:
       - ./data:/var/lib/woodpecker
-    ports:
-      - 8000:8000
-      - 9000:9000
+    network_mode: host
 EOF
 
 cd "$INSTALL_DIR"
