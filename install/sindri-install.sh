@@ -9,21 +9,25 @@ COMPOSE_FILE="$INSTALL_DIR/docker-compose.yml"
 msg() { echo -e "\033[1;32m[INFO]\033[0m $*"; }
 err() { echo -e "\033[1;31m[ERROR]\033[0m $*" >&2; }
 
+echo ""
 msg "Installing Docker & Docker Compose..."
 apt-get update -y
 apt-get install -y curl ca-certificates gnupg lsb-release unzip jq docker.io docker-compose
 
+echo ""
 msg "Creating user and directory..."
 useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin "$APP" || true
 mkdir -p "$INSTALL_DIR/data"
 chown -R "$APP:$APP" "$INSTALL_DIR"
 
+echo ""
 msg "Prompting for Gitea URL..."
 read -p "Enter your Gitea URL [default: http://gitea.local]: " GITEA_URL
 GITEA_URL=${GITEA_URL:-http://gitea.local}
 
 WOODPECKER_AGENT_SECRET=$(openssl rand -hex 16)
 
+echo ""
 msg "Writing .env file..."
 cat > "$ENV_FILE" <<EOF
 WOODPECKER_OPEN=true
@@ -35,6 +39,7 @@ WOODPECKER_GITEA_SECRET=replace-me
 WOODPECKER_AGENT_SECRET=$WOODPECKER_AGENT_SECRET
 EOF
 
+echo ""
 msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
 services:
@@ -51,6 +56,7 @@ EOF
 
 cd "$INSTALL_DIR"
 
+echo ""
 msg "Starting Woodpecker CI using Docker Compose..."
 docker-compose up -d
 

@@ -23,5 +23,4 @@ description
 # Done
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} is now forging pipelines!${CL}"
-echo -e "${INFO}${YW} Agent will communicate with Woodpecker Server at:${CL}"
-echo -e "${TAB}${WOODPECKER_SERVER}${CL}"
+echo -e "${INFO}${YW} Agent will communicate with Woodpecker Server ${CL}"
