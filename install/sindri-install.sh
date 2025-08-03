@@ -25,6 +25,13 @@ msg "Prompting for Gitea URL..."
 read -p "Enter your Gitea URL [default: http://gitea.local]: " GITEA_URL
 GITEA_URL=${GITEA_URL:-http://gitea.local}
 
+echo ""
+msg "Prompting for Gitea Client ID and Secret..."
+read -p "Enter your Gitea Client ID: " GITEA_CLIENT
+GITEA_CLIENT=${GITEA_CLIENT}
+read -p "Enter your Gitea Secret: " GITEA_CLIENT
+GITEA_SECRET=${GITEA_SECRET}
+
 WOODPECKER_AGENT_SECRET=$(openssl rand -hex 16)
 
 echo ""
@@ -34,9 +41,10 @@ WOODPECKER_OPEN=true
 WOODPECKER_HOST=http://localhost:8000
 WOODPECKER_GITEA=true
 WOODPECKER_GITEA_URL=$GITEA_URL
-WOODPECKER_GITEA_CLIENT=replace-me
-WOODPECKER_GITEA_SECRET=replace-me
+WOODPECKER_GITEA_CLIENT=$GITEA_CLIENT
+WOODPECKER_GITEA_SECRET=$GITEA_SECRET
 WOODPECKER_AGENT_SECRET=$WOODPECKER_AGENT_SECRET
+WOODPECKER_ADMIN=OnyxJeff
 EOF
 
 echo ""
