@@ -2,7 +2,7 @@
 source <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/misc/build.func)
 
 # App Metadata
-APP="Brokkr"
+APP="Eitri"
 var_tags="${var_tags:-cd;eitri;woodpecker;pipeline;agent}"
 var_cpu="${var_cpu:-1}"
 var_ram="${var_ram:-1024}"
