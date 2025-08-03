@@ -68,10 +68,10 @@ docker run -d \
   --name woodpecker-server \
   --restart unless-stopped \
   -v "$INSTALL_DIR/data:/var/lib/woodpecker" \
-  -v "$ENV_FILE:/etc/woodpecker.env" \
+  -v "$ENV_FILE:/opt/woodpecker.env" \
   -p 8000:8000 \
   -p 9000:9000 \
-  --env-file /etc/woodpecker.env \
+  --env-file /opt/woodpecker.env \
   "$REPO:latest"
 
 msg "Woodpecker CI server is up and running!"
