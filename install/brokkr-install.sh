@@ -28,12 +28,16 @@ read -p "Enter Sindri (Woodpecker Server) URL (e.g. sindri.local [Do NOT include
 read -p "Enter Woodpecker Agent Secret: " WOODPECKER_AGENT_SECRET
 
 echo ""
+msg "Prompting for agent labels..."
+read -p "Please list the platforms that this agent will serve (e.g. linux,arm64,etc.)..." AGENT_LABELS
+
+echo ""
 msg "Writing .env file..."
 cat > "$ENV_FILE" <<EOF
 WOODPECKER_SERVER=${WOODPECKER_SERVER}:9000
 WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
 WOODPECKER_MAX_WORKFLOWS=2
-WOODPECKER_AGENT_LABELS=linux,arm64
+WOODPECKER_AGENT_LABELS=${AGENT_LABELS}
 EOF
 
 echo ""
