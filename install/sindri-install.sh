@@ -26,7 +26,7 @@ msg "Prompting for Gitea Info..."
 read -p "Enter your Gitea URL [default: http://gitea.local]: " GITEA_URL
 GITEA_URL=${GITEA_URL:-http://gitea.local}
 read -p "Enter your Gitea Client ID: " GITEA_CLIENT
-GITEA_CLIENT=${GITEA_URL}
+GITEA_CLIENT=${GITEA_CLIENT}
 read -p "Enter your Gitea Client Secret: " GITEA_SECRET
 GITEA_SECRET=${GITEA_SECRET}
 
