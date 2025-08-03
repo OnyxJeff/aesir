@@ -23,14 +23,15 @@ chown -R "$APP:$APP" "$INSTALL_DIR"
 # Prompt for Sindri URL and Agent Secret
 echo ""
 msg "Prompting for Sindri server url & Agent Secret..."
-read -p "Enter Sindri (Woodpecker Server) URL (e.g. http://sindri.local:9000): " WOODPECKER_SERVER
+read -p "Enter Sindri (Woodpecker Server) URL (e.g. http://sindri.local): " WOODPECKER_SERVER
 read -p "Enter Woodpecker Agent Secret: " WOODPECKER_AGENT_SECRET
 
 echo ""
 msg "Writing .env file..."
 cat > "$ENV_FILE" <<EOF
-WOODPECKER_SERVER=$WOODPECKER_SERVER
-WOODPECKER_AGENT_SECRET=$WOODPECKER_AGENT_SECRET
+WOODPECKER_SERVER=${WOODPECKER_SERVER}:9000
+WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
+WOODPECKER_MAX_WORKFLOWS=2
 EOF
 
 echo ""
@@ -38,11 +39,11 @@ msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
 services:
   brokkr:
-    image: woodpeckerci/woodpecker-agent:next
-    restart: unless-stopped
-    env_file: .env
+    image: woodpeckerci/woodpecker-agent:v3
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    env_file: .env
+    restart: unless-stopped
 EOF
 
 cd "$INSTALL_DIR"

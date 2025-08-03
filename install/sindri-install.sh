@@ -31,12 +31,12 @@ echo ""
 msg "Writing .env file..."
 cat > "$ENV_FILE" <<EOF
 WOODPECKER_OPEN=true
-WOODPECKER_HOST=http://localhost:8000
+WOODPECKER_HOST=${WOODPECKER_HOST}
 WOODPECKER_GITEA=true
-WOODPECKER_GITEA_URL=$GITEA_URL
-WOODPECKER_GITEA_CLIENT=replace_me
-WOODPECKER_GITEA_SECRET=replace_me
-WOODPECKER_AGENT_SECRET=$WOODPECKER_AGENT_SECRET
+WOODPECKER_GITEA_URL=${GITEA_URL}
+WOODPECKER_GITEA_CLIENT=${GITEA_CLIENT}
+WOODPECKER_GITEA_SECRET=${GITEA_SECRET}
+WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
 WOODPECKER_ADMIN=OnyxJeff
 EOF
 
@@ -45,14 +45,14 @@ msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
 services:
   server:
-    image: woodpeckerci/woodpecker-server:next
-    restart: unless-stopped
-    env_file: .env
-    volumes:
-      - ./data:/var/lib/woodpecker
+    image: woodpeckerci/woodpecker-server:v3
     ports:
       - 8000:8000
       - 9000:9000
+    volumes:
+      - ./data:/var/lib/woodpecker
+    env_file: .env  
+    restart: unless-stopped
 EOF
 
 cd "$INSTALL_DIR"
