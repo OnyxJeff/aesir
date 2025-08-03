@@ -53,7 +53,6 @@ services:
       - ./agent-config:/etc/woodpecker
     labels:
       - "woodpecker.platform=linux/amd64"
-      - "woodpecker.platform=linux/arm64"
 EOF
 
 cd "$INSTALL_DIR"

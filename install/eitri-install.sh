@@ -52,7 +52,6 @@ services:
       - ./data:/var/lib/woodpecker
       - ./agent-config:/etc/woodpecker
     labels:
-      - "woodpecker.platform=linux/amd64"
       - "woodpecker.platform=linux/arm64"
 EOF
 
