@@ -26,6 +26,11 @@ read -p "Enter your Gitea URL [default: http://gitea.local]: " GITEA_URL
 GITEA_URL=${GITEA_URL:-http://gitea.local}
 
 echo ""
+msg "Prompting for Gitea Admin User..."
+read -p "Enter your Gitea Admin User: " GITEA_ADMIN
+GITEA_ADMIN=${GITEA_ADMIN}
+
+echo ""
 msg "Prompting for Gitea Client ID..."
 read -p "Enter your Gitea Client ID: " GITEA_CLIENT
 GITEA_CLIENT=${GITEA_CLIENT}
@@ -47,7 +52,7 @@ WOODPECKER_GITEA_URL=$GITEA_URL
 WOODPECKER_GITEA_CLIENT=$GITEA_CLIENT
 WOODPECKER_GITEA_SECRET=$GITEA_SECRET
 WOODPECKER_AGENT_SECRET=$WOODPECKER_AGENT_SECRET
-WOODPECKER_ADMIN=OnyxJeff
+WOODPECKER_ADMIN=$GITEA_ADMIN
 EOF
 
 echo ""
