@@ -40,17 +40,13 @@ msg "Prompting for Gitea Secret..."
 read -p "Enter your Gitea Secret: " GITEA_SECRET
 GITEA_SECRET=${GITEA_SECRET}
 
-msg "Optaining Container IP Address..."
-CONTAINER_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' woodpecker-server)
-CONTAINER_IP=${CONTAINER_IP}
-
 WOODPECKER_AGENT_SECRET=$(openssl rand -hex 16)
 
 echo ""
 msg "Writing .env file..."
 cat > "$ENV_FILE" <<EOF
 WOODPECKER_OPEN=true
-WOODPECKER_HOST=http://$CONTAINER_IP:8000
+WOODPECKER_HOST=http://localhost:8000
 WOODPECKER_GITEA=true
 WOODPECKER_GITEA_URL=$GITEA_URL
 WOODPECKER_GITEA_CLIENT=$GITEA_CLIENT
