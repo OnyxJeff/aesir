@@ -55,6 +55,5 @@ msg "Starting Woodpecker CI using Docker Compose..."
 docker-compose up -d
 
 msg "✅ Woodpecker CI is now running!"
-echo "🌐 Access it at: http://<your_container_ip>:8000"
 echo "🛠️ To register Brokkr agent, use this secret:"
 echo "🔑 $WOODPECKER_AGENT_SECRET"

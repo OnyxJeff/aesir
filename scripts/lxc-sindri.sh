@@ -21,6 +21,7 @@ build_container
 description
 
 pct exec "$CTID" -- bash -c "cd /opt/woodpecker && docker-compose up -d"
+WOODPECKER_AGENT_SECRET=$(pct exec "$CTID" -- cat /opt/woodpecker/agent.secret 2>/dev/null || echo "unknown")
 
 # Done
 msg_ok "Completed Successfully!\n"
