@@ -3,7 +3,7 @@ source <(curl -fsSL https://raw.githubusercontent.com/OnyxJeff/aesir/main/misc/b
 
 # App Metadata
 APP="Sindri"
-var_tags="${var_tags:-ci;woodpecker;pipeline}"
+var_tags="${var_tags:-ci;sindri;woodpecker;pipeline;server}"
 var_cpu="${var_cpu:-2}"
 var_ram="${var_ram:-2048}"
 var_disk="${var_disk:-8}"
