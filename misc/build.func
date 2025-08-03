@@ -222,7 +222,7 @@ base_settings() {
   VLAN=""
   SSH="no"
   SSH_AUTHORIZED_KEY=""
-  TAGS="community-script;"
+  TAGS="onyxjeff-script;"
   ENABLE_FUSE="${1:-no}"
   ENABLE_TUN="${1:-no}"
 
@@ -245,7 +245,7 @@ base_settings() {
   fi
 }
 write_config() {
-  mkdir -p /opt/community-scripts
+  mkdir -p /opt/onyxjeff-scripts
   # This function writes the configuration to a file.
   if whiptail --backtitle "Proxmox VE Helper Scripts" --defaultno --title "Write configfile" --yesno "Do you want to write the selections to a config file?" 10 60; then
     FILEPATH="/opt/community-scripts/${NSAPP}.conf"

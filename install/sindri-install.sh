@@ -54,6 +54,7 @@ cd "$INSTALL_DIR"
 msg "Starting Woodpecker CI using Docker Compose..."
 docker-compose up -d
 
+echo ""
 msg "✅ Woodpecker CI is now running!"
 echo "🛠️ To register Brokkr agent, use this secret:"
 echo "🔑 $WOODPECKER_AGENT_SECRET"

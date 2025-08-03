@@ -21,12 +21,9 @@ build_container
 description
 
 pct exec "$CTID" -- bash -c "cd /opt/woodpecker && docker-compose up -d"
-WOODPECKER_AGENT_SECRET=$(pct exec "$CTID" -- cat /opt/woodpecker/agent.secret 2>/dev/null || echo "unknown")
 
 # Done
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} is now forging pipelines!${CL}"
 echo -e "${INFO}${YW} Access the Woodpecker CI web UI at:${CL}"
 echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8000${CL}"
-echo -e "${INFO} To register Brokkr later, use this Agent Secret:"
-echo -e "${TAB}${WOODPECKER_AGENT_SECRET}"
