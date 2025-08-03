@@ -17,8 +17,10 @@ useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin woodpecker || true
 mkdir -p "$INSTALL_DIR"
 chown woodpecker:woodpecker "$INSTALL_DIR"
 
+read -rp "Enter Woodpecker version to install (e.g. v2, v2.3.1, next): " WOODPECKER_VERSION
+
 msg "Downloading latest Woodpecker binary..."
-LATEST=$(curl -s "https://api.github.com/repos/${REPO}/releases/latest" | jq -r '.tag_name')
+WOODPECKER_VERSION="v2"
 ARCH=$(dpkg --print-architecture)
 
 if [[ "$ARCH" != "amd64" ]]; then
@@ -26,7 +28,12 @@ if [[ "$ARCH" != "amd64" ]]; then
   exit 1
 fi
 
-DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${LATEST}/woodpecker_${LATEST}_linux_amd64.tar.gz"
+DOWNLOAD_URL="https://github.com/${REPO}/releases/download/${WOODPECKER_VERSION}/woodpecker_${WOODPECKER_VERSION}_linux_amd64.tar.gz"
+
+curl --head --fail --silent "$DOWNLOAD_URL" >/dev/null || {
+  err "Woodpecker version not found at $DOWNLOAD_URL"
+  exit 1
+}
 
 curl -L "$DOWNLOAD_URL" -o /tmp/woodpecker.tar.gz
 tar -xzvf /tmp/woodpecker.tar.gz -C /tmp
