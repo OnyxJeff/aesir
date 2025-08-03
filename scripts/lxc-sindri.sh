@@ -20,8 +20,6 @@ start
 build_container
 description
 
-pct exec "$CTID" -- bash -c "cd /opt/woodpecker && docker-compose up -d"
-
 # Done
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} is now forging pipelines!${CL}"

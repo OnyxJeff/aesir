@@ -20,10 +20,8 @@ start
 build_container
 description
 
-pct exec "$CTID" -- bash -c "cd /opt/woodpecker && docker-compose up -d"
-
 # Done
 msg_ok "Completed Successfully!\n"
 echo -e "${CREATING}${GN}${APP} is now forging pipelines!${CL}"
-echo -e "${INFO}${YW} Access the Woodpecker CI web UI at:${CL}"
-echo -e "${TAB}${GATEWAY}${BGN}http://${IP}:8000${CL}"
+echo -e "${INFO}${YW} Agent will communicate with Woodpecker Server at:${CL}"
+echo -e "${TAB}${WOODPECKER_SERVER}${CL}"

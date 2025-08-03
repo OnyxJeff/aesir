@@ -35,20 +35,15 @@ services:
   brokkr:
     image: woodpeckerci/woodpecker-agent:latest
     restart: unless-stopped
-    environment:
-      - WOODPECKER_AGENT_SECRET=\${WOODPECKER_AGENT_SECRET}
-      - WOODPECKER_SERVER=\${WOODPECKER_SERVER}
-      - WOODPECKER_HOST=http://localhost:9000
+    env_file: .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 EOF
 
 cd "$INSTALL_DIR"
 
-msg "Starting Woodpecker CI using Docker Compose..."
+msg "Starting Woodpecker-agent CD using Docker Compose..."
 docker-compose up -d
 
 echo ""
-msg "✅ Woodpecker CI is now running!"
-echo "🛠️ To register Brokkr agent, use this secret:"
-echo "🔑 $WOODPECKER_AGENT_SECRET"
+msg "✅ Woodpecker-Agent CD is now running!"
