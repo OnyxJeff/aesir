@@ -20,6 +20,9 @@ useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin "$APP" || true
 mkdir -p "$INSTALL_DIR/data"
 chmod 777 "$INSTALL_DIR/data"
 chown -R "$APP:$APP" "$INSTALL_DIR"
+mkdir -p "$INSTALL_DIR/agent-config"
+chmod 777 "$INSTALL_DIR/agent-config"
+chown -R "$APP:$APP" "$INSTALL_DIR"
 
 # Prompt for Sindri URL and Agent Secret
 echo ""
@@ -46,6 +49,8 @@ services:
     env_file: .env
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./data:/var/lib/woodpecker
+      - ./agent-config:/etc/woodpecker
     labels:
       - "woodpecker.platform=linux/amd64"
       - "woodpecker.platform=linux/arm64"
