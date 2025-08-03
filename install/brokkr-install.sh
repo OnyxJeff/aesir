@@ -18,6 +18,7 @@ echo ""
 msg "Creating user and directory..."
 useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin "$APP" || true
 mkdir -p "$INSTALL_DIR/data"
+chmod 777 "$INSTALL_DIR/data"
 chown -R "$APP:$APP" "$INSTALL_DIR"
 
 # Prompt for Sindri URL and Agent Secret
