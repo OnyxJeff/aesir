@@ -22,9 +22,14 @@ chmod 777 "$INSTALL_DIR/data"
 chown -R "$APP:$APP" "$INSTALL_DIR"
 
 echo ""
-msg "Prompting for Gitea URL..."
+msg "Prompting for Gitea Info..."
 read -p "Enter your Gitea URL [default: http://gitea.local]: " GITEA_URL
 GITEA_URL=${GITEA_URL:-http://gitea.local}
+read -p "Enter your Gitea Client ID: " GITEA_CLIENT
+GITEA_CLIENT=${GITEA_URL}
+read -p "Enter your Gitea Client Secret: " GITEA_SECRET
+GITEA_SECRET=${GITEA_SECRET}
+
 
 WOODPECKER_AGENT_SECRET=$(openssl rand -hex 16)
 
