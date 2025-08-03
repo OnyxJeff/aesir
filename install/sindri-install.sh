@@ -44,7 +44,7 @@ msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
 services:
   server:
-    image: woodpeckerci/woodpecker-server:latest
+    image: woodpeckerci/woodpecker-server:next
     restart: unless-stopped
     env_file: .env
     volumes:

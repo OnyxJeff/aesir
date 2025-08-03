@@ -38,7 +38,7 @@ msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
 services:
   brokkr:
-    image: woodpeckerci/woodpecker-agent:latest
+    image: woodpeckerci/woodpecker-agent:next
     restart: unless-stopped
     env_file: .env
     volumes:
