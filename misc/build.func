@@ -372,7 +372,7 @@ exit_script() {
 advanced_settings() {
   whiptail --backtitle "Proxmox VE Helper Scripts" --msgbox --title "Here is an instructional tip:" "To make a selection, use the Spacebar." 8 58
   # Setting Default Tag for Advanced Settings
-  TAGS="community-script;${var_tags:-}"
+  TAGS="onyxjeff-script;${var_tags:-}"
   CT_DEFAULT_TYPE="${CT_TYPE}"
   CT_TYPE=""
   while [ -z "$CT_TYPE" ]; do

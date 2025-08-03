@@ -18,30 +18,19 @@ useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin "$APP" || true
 mkdir -p "$INSTALL_DIR/data"
 chown -R "$APP:$APP" "$INSTALL_DIR"
 
+# Prompt for Sindri URL and Agent Secret
 msg "Prompting for Sindri server url & Agent Secret..."
-read -p "Enter Sindri (Woodpecker server) URL/IP address [without a port number]: " SINDRI_URL
-read -p "Enter Agent Secret (from Sindri install): " AGENT_SECRET
+read -p "Enter Sindri (Woodpecker Server) URL (e.g. http://sindri.local:8000): " WOODPECKER_SERVER
+read -p "Enter Woodpecker Agent Secret: " WOODPECKER_AGENT_SECRET
 
 msg "Writing .env file..."
 cat > "$ENV_FILE" <<EOF
-WOODPECKER_SERVER=$SINDRI_URL
-WOODPECKER_AGENT_SECRET=$AGENT_SECRET
+WOODPECKER_SERVER=$WOODPECKER_SERVER
+WOODPECKER_AGENT_SECRET=$WOODPECKER_AGENT_SECRET
 EOF
 
 msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
-# Prompt for Sindri URL and Agent Secret
-read -p "Enter Sindri (Woodpecker Server) URL (e.g. http://sindri.local:8000): " WOODPECKER_SERVER
-read -p "Enter Woodpecker Agent Secret: " WOODPECKER_AGENT_SECRET
-
-mkdir -p /opt/brokkr
-cat > /opt/brokkr/.env <<EOF
-WOODPECKER_AGENT_SECRET=${WOODPECKER_AGENT_SECRET}
-WOODPECKER_SERVER=${WOODPECKER_SERVER}
-WOODPECKER_HOST=http://localhost:9000
-EOF
-
-cat > /opt/brokkr/docker-compose.yml <<EOF
 services:
   brokkr:
     image: woodpeckerci/woodpecker-agent:latest
