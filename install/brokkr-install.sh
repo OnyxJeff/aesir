@@ -23,7 +23,7 @@ chown -R "$APP:$APP" "$INSTALL_DIR"
 # Prompt for Sindri URL and Agent Secret
 echo ""
 msg "Prompting for Sindri server url & Agent Secret..."
-read -p "Enter Sindri (Woodpecker Server) URL (e.g. http://sindri.local): " WOODPECKER_SERVER
+read -p "Enter Sindri (Woodpecker Server) URL (e.g. sindri.local [Do NOT include http://]): " WOODPECKER_SERVER
 read -p "Enter Woodpecker Agent Secret: " WOODPECKER_AGENT_SECRET
 
 echo ""

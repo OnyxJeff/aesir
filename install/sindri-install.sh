@@ -18,6 +18,7 @@ echo ""
 msg "Creating user and directory..."
 useradd -r -m -d "$INSTALL_DIR" -s /usr/sbin/nologin "$APP" || true
 mkdir -p "$INSTALL_DIR/data"
+chmod 777 "$INSTALL_DIR/data"
 chown -R "$APP:$APP" "$INSTALL_DIR"
 
 echo ""
@@ -46,12 +47,12 @@ cat > "$COMPOSE_FILE" <<EOF
 services:
   server:
     image: woodpeckerci/woodpecker-server:v3
+    volumes:
+      - ./data:/var/lib/woodpecker
+    env_file: .env
     ports:
       - 8000:8000
       - 9000:9000
-    volumes:
-      - ./data:/var/lib/woodpecker
-    env_file: .env  
     restart: unless-stopped
 EOF
 
