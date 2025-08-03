@@ -40,7 +40,7 @@ echo ""
 msg "Writing docker-compose.yml..."
 cat > "$COMPOSE_FILE" <<EOF
 services:
-  brokkr:
+  eitri:
     image: woodpeckerci/woodpecker-agent:v3
     restart: unless-stopped
     env_file: .env
